@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoLive</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar">
+        <h1 class="nav-title">GoLive</h1>
+        <div class="nav-item" onclick="showTab('task-management')">Task Management</div>
+        <div class="nav-item" onclick="showTab('resources')">Resources</div>
+        <div class="nav-item" onclick="showTab('miscellaneous')">Miscellaneous</div>
+        <div class="nav-item" onclick="showTab('analytics')">Analytics</div>
+    </div>
+    <div class="container">
+        <div id="task-management" class="tab-content">
+            <div class="task-management">
+                <div class="header">
+                    <h1>Task Management</h1>
+                    <button class="open-popup" onclick="openPopup()">Add New Task</button>
+                </div>
+                <div class="task-dashboard">
+                    <h2>Task Dashboard</h2>
+                    <div class="card">
+                        <div class="status-cards">
+                            <div class="status-card" id="pending-design-card" onclick="filterStatus('Pending Design Assessment')">
+                                <span id="pending-design-count">0</span>
+                                <p>Pending Design Assessment</p>
+                            </div>
+                            <div class="status-card" id="pending-dev-card" onclick="filterStatus('Pending Development')">
+                                <span id="pending-dev-count">0</span>
+                                <p>Pending Development</p>
+                            </div>
+                            <div class="status-card" id="pending-first-cut-card" onclick="filterStatus('Pending First Cut')">
+                                <span id="pending-first-cut-count">0</span>
+                                <p>Pending First Cut</p>
+                            </div>
+                            <div class="status-card" id="in-progress-card" onclick="filterStatus('In Progress')">
+                                <span id="in-progress-count">0</span>
+                                <p>In Progress</p>
+                            </div>
+                            <div class="status-card" id="first-cut-card" onclick="filterStatus('First Cut Delivered')">
+                                <span id="first-cut-count">0</span>
+                                <p>First Cut Delivered</p>
+                            </div>
+                            <div class="status-card" id="awaiting-feedback-card" onclick="filterStatus('Awaiting Brand Feedback')">
+                                <span id="awaiting-feedback-count">0</span>
+                                <p>Awaiting Brand Feedback</p>
+                            </div>
+                            <div class="status-card" id="pending-subscription-card" onclick="filterStatus('Pending Subscription')">
+                                <span id="pending-subscription-count">0</span>
+                                <p>Pending Subscription</p>
+                            </div>
+                            <div class="status-card" id="subscribed-card" onclick="filterStatus('Subscribed')">
+                                <span id="subscribed-count">0</span>
+                                <p>Subscribed</p>
+                            </div>
+                        </div>
+                        <div class="tags-container">
+                            <button class="clear-filter" onclick="clearFilter()">Clear Filter ✖</button>
+                            <div id="tags-summary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="task-list">
+                <div class="task-list-header">
+                    <h2>Task List</h2>
+                    <div class="export-import-buttons">
+                        <button class="export-btn" onclick="exportToCSV()">Export to CSV 📁</button>
+                        <button class="import-btn" onclick="importCSV()">Import CSV 📁</button>
+                    </div>
+                </div>
+                <div id="task-list-container"></div>
+                <p id="no-tasks" style="display:none;">No tasks available</p>
+            </div>
+        </div>
+
+        <div id="resources" class="tab-content" style="display:none;">
+            <div class="resources-management full-width">
+                <div class="header">
+                    <h1>Resources</h1>
+                    <button class="open-popup" onclick="openResourcePopup()">Add New Resource</button>
+                </div>
+                <input type="text" id="search-resources" placeholder="Search Resources" onkeyup="searchResources()">
+                <div class="export-import-buttons">
+                    <button class="export-btn" onclick="exportResourcesToCSV()">Export to CSV 📁</button>
+                    <button class="import-btn" onclick="importResourcesCSV()">Import CSV 📁</button>
+                </div>
+                <div id="resource-list-container" class="resource-grid"></div>
+                <p id="no-resources" style="display:none;">No resources available</p>
+            </div>
+        </div>
+
+        <div id="miscellaneous" class="tab-content" style="display:none;">
+            <div class="miscellaneous-management full-width">
+                <div class="header">
+                    <h1>Miscellaneous Information</h1>
+                    <button class="open-popup" onclick="openMiscPopup()">Add New Info</button>
+                </div>
+                <input type="text" id="search-misc" placeholder="Search Miscellaneous" onkeyup="searchMisc()">
+                <div class="export-import-buttons">
+                    <button class="export-btn" onclick="exportMiscToCSV()">Export to CSV 📁</button>
+                    <button class="import-btn" onclick="importMiscCSV()">Import CSV 📁</button>
+                </div>
+                <div id="misc-list-container" class="misc-grid"></div>
+                <p id="no-misc" style="display:none;">No miscellaneous information available</p>
+            </div>
+        </div>
+
+        <div id="analytics" class="tab-content" style="display:none;">
+            <div class="analytics-management full-width">
+                <div class="header">
+                    <h1>Analytics</h1>
+                </div>
+                <div id="analytics-content">
+                    <div class="card">
+                        <h2>Task Summary</h2>
+                        <p id="total-tasks">Total Tasks: 0</p>
+                        <p id="total-subscribed-tasks">Subscribed Tasks: 0</p>
+                    </div>
+                    <div class="card">
+                        <h2>Resource Summary</h2>
+                        <p id="total-resources">Total Resources: 0</p>
+                    </div>
+                    <div class="card">
+                        <h2>Miscellaneous Summary</h2>
+                        <p id="total-misc">Total Miscellaneous Info: 0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Add New Task</h2>
+            <div class="form-row">
+                <label>Title</label>
+                <input type="text" id="title" placeholder="Title" required>
+            </div>
+            <div class="form-row">
+                <label>Description</label>
+                <textarea id="description" placeholder="Description" required></textarea>
+            </div>
+            <div class="form-row">
+                <label>Deadline</label>
+                <input type="date" id="deadline" required>
+            </div>
+            <div class="form-row">
+                <label>Tags</label>
+                <input type="text" id="tags" placeholder="Tags (comma-separated)">
+            </div>
+            <button onclick="addTask()">Add Task</button>
+        </div>
+    </div>
+
+    <div id="resource-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeResourcePopup()">&times;</span>
+            <h2>Add New Resource</h2>
+            <div class="form-row">
+                <label>Name</label>
+                <input type="text" id="resource-name" placeholder="Name" required>
+            </div>
+            <div class="form-row">
+                <label>URL</label>
+                <input type="text" id="resource-url" placeholder="URL" required>
+            </div>
+            <div class="form-row">
+                <label>Tags</label>
+                <input type="text" id="resource-tags" placeholder="Tags (comma-separated)">
+            </div>
+            <button onclick="addResource()">Add Resource</button>
+        </div>
+    </div>
+
+    <div id="misc-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeMiscPopup()">&times;</span>
+            <h2>Add Miscellaneous Information</h2>
+            <div class="form-row">
+                <label>Merchant Name</label>
+                <input type="text" id="misc-merchant-name" placeholder="Merchant Name" required>
+            </div>
+            <h3>Access Required</h3>
+            <div class="form-row">
+                <label>Apple Developer Account</label>
+                <select id="misc-access-apple">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Facebook Developer Account</label>
+                <select id="misc-access-facebook">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Firebase</label>
+                <select id="misc-access-firebase">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Android Developer Account</label>
+                <select id="misc-access-android">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Subscribed</label>
+                <select id="misc-subscribed">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Received Access</label>
+                <select id="misc-received-access">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Release Type</label>
+                <select id="misc-release-type">
+                    <option value="New App">New App</option>
+                    <option value="Version release">Version release</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>JKS File</label>
+                <select id="misc-jks-file">
+                    <option value="Received">Received</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Not applicable">Not applicable</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>First Cut Delivered</label>
+                <select id="misc-first-cut-delivered">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Access Email</label>
+                <select id="misc-access-email">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Missing Data</label>
+                <select id="misc-missing-data">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Data Access Scope</label>
+                <select id="misc-data-access-scope">
+                    <option value="Added">Added</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Integration Credentials</label>
+                <select id="misc-integration-credentials">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Dashboard Training</label>
+                <select id="misc-dashboard-training">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Expected Go Live</label>
+                <input type="date" id="misc-expected-go-live">
+            </div>
+            <div class="form-row">
+                <label>Additional Remarks</label>
+                <textarea id="misc-additional-remarks" placeholder="Additional Remarks"></textarea>
+            </div>
+            <button onclick="addMisc()">Add Information</button>
+        </div>
+    </div>
+
+    <div id="misc-detail-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeMiscDetailPopup()">&times;</span>
+            <h2>Miscellaneous Information Details</h2>
+            <table id="misc-detail-table">
+                <!-- Table content will be dynamically generated here -->
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

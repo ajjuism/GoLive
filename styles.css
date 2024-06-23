@@ -1,0 +1,447 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    margin: 0;
+    padding: 0;
+    color: #e0e0e0;
+}
+
+.navbar {
+    display: flex;
+    background-color: #1c1c1c;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-title {
+    margin-right: 20px;
+    font-size: 24px;
+    color: #fff;
+}
+
+.nav-item {
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: #3e3e3e;
+    color: #fff;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    max-width: 1400px;
+    margin: auto;
+}
+
+.tab-content {
+    width: 100%;
+    display: flex;
+}
+
+.task-management, .task-list, .resources-management, .miscellaneous-management, .analytics-management {
+    background-color: #121212;
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.task-management {
+    width: 45%;
+}
+
+.task-list {
+    width: 55%;
+}
+
+h1, h2, h3 {
+    margin-top: 20px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+button:hover {
+    background-color: #3700b3;
+}
+
+.card {
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.status-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.status-card {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 40%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.status-card:hover {
+    background-color: #444;
+}
+
+.status-card span {
+    font-size: 24px;
+    display: block;
+    font-weight: 700;
+}
+
+.status-card p {
+    margin: 0;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.tags-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.clear-filter {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.clear-filter:hover {
+    color: #ff5733;
+}
+
+.tag {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: #fff;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: #6200ea;
+}
+
+.task-list-header, .resource-list-header, .misc-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.export-import-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.export-btn, .import-btn {
+    width: auto;
+    background-color: #232323;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.export-btn:hover, .import-btn:hover {
+    background-color: #3700b3;
+}
+
+.task-item, .misc-item {
+    border: 1px solid #444;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background-color: #272727;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.task-item-details, .misc-item-details {
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.task-item h3, .misc-item h3 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.task-item p, .misc-item p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.task-item .actions, .misc-item .actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.task-item .actions select, 
+.task-item .actions button {
+    width: auto;
+    padding: 5px 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #444;
+    color: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.task-item .actions button:hover, .misc-item .actions button:hover {
+    background-color: #555;
+}
+
+.task-item .actions .icon-button, .misc-item .actions .icon-button {
+    background-color: transparent;
+    border: none;
+    color: #ddd;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.task-item .actions .icon-button:hover, .misc-item .actions .icon-button:hover {
+    color: #fff;
+}
+
+.task-status-blue {
+    background-color: rgba(98, 0, 234, 0.1);
+}
+
+.task-status-orange {
+    background-color: rgba(255, 87, 51, 0.1);
+}
+
+.task-status-green {
+    background-color: rgba(81, 193, 110, 0.1);
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.popup-content {
+    background-color: #1c1c1c;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #444;
+    width: 40%;
+    border-radius: 12px;
+    position: relative;
+}
+
+.popup-content h2 {
+    margin-top: 0;
+}
+
+.popup-content input, 
+.popup-content textarea, 
+.popup-content select, 
+.popup-content button {
+    width: 96%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #272727;
+    color: #ddd;
+}
+
+.popup-content button {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.popup-content button:hover {
+    background-color: #3700b3;
+}
+
+.popup-content .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#search-resources, #search-misc {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background-color: #272727;
+    color: #ddd;
+    font-size: 16px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.resource-grid, .misc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.resource-item, .misc-item {
+    background-color: #272727;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.resource-item:hover, .misc-item:hover {
+    background-color: #333;
+}
+
+.resource-item-details, .misc-item-details {
+    flex-grow: 1;
+}
+
+.resource-item h3, .misc-item h3 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.resource-item .actions, .misc-item .actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.resource-item .actions button, .misc-item .actions button {
+    background-color: transparent;
+    border: none;
+    color: #ddd;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.resource-item .actions button:hover, .misc-item .actions button:hover {
+    color: #fff;
+}
+
+.resource-item .tag, .misc-item .tag {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: #fff;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: #6200ea;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.form-row label {
+    width: 48%;
+    font-size: 16px;
+    color: #ddd;
+}
+
+.form-row select, .form-row input, .form-row textarea {
+    width: 48%;
+}
+
+#misc-detail-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+#misc-detail-table td {
+    padding: 10px;
+    border: 1px solid #444;
+}
+
+#misc-detail-table tr:nth-child(even) {
+    background-color: #2c2c2c;
+}
+
+.miscellaneous-management .header,
+.miscellaneous-management .export-import-buttons {
+    margin-bottom: 30px;
+}
