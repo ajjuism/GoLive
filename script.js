@@ -14,6 +14,10 @@ function loadFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
 }
 
+function generateUniqueId() {
+    return 'id-' + Math.random().toString(36).substr(2, 16);
+}
+
 function addTask() {
     const title = document.getElementById('title').value.trim();
     const description = document.getElementById('description').value.trim();
@@ -26,7 +30,7 @@ function addTask() {
     }
 
     const task = {
-        id: editingTaskId || Date.now(),
+        id: editingTaskId || generateUniqueId(),
         title,
         description,
         deadline,
@@ -60,7 +64,7 @@ function addResource() {
     }
 
     const resource = {
-        id: editingResourceId || Date.now(),
+        id: editingResourceId || generateUniqueId(),
         name,
         url,
         tags: tags.filter(tag => tag),
@@ -104,7 +108,7 @@ function addMisc() {
     }
 
     const misc = {
-        id: editingMiscId || Date.now(),
+        id: editingMiscId || generateUniqueId(),
         merchantName,
         accessApple,
         accessFacebook,
@@ -139,7 +143,7 @@ function addMisc() {
 
 function addMiscFromTask(task) {
     const misc = {
-        id: Date.now(),
+        id: generateUniqueId(),
         merchantName: task.title,
         accessApple: "No",
         accessFacebook: "No",
@@ -187,7 +191,7 @@ function renderTasks(filteredTasks = tasks) {
                 <p>Status: ${task.status}</p>
             </div>
             <div class="actions">
-                <select onchange="updateTaskStatus(${task.id}, this.value)">
+                <select onchange="updateTaskStatus('${task.id}', this.value)">
                     <option value="Pending Design Assessment" ${task.status === 'Pending Design Assessment' ? 'selected' : ''}>Pending Design Assessment</option>
                     <option value="Pending Development" ${task.status === 'Pending Development' ? 'selected' : ''}>Pending Development</option>
                     <option value="Pending First Cut" ${task.status === 'Pending First Cut' ? 'selected' : ''}>Pending First Cut</option>
@@ -197,8 +201,8 @@ function renderTasks(filteredTasks = tasks) {
                     <option value="Pending Subscription" ${task.status === 'Pending Subscription' ? 'selected' : ''}>Pending Subscription</option>
                     <option value="Subscribed" ${task.status === 'Subscribed' ? 'selected' : ''}>Subscribed</option>
                 </select>
-                <button class="icon-button" onclick="editTask(${task.id})">✎</button>
-                <button class="icon-button" onclick="confirmDeleteTask(${task.id})">🗑</button>
+                <button class="icon-button" onclick="editTask('${task.id}')">✎</button>
+                <button class="icon-button" onclick="confirmDeleteTask('${task.id}')">🗑</button>
             </div>
         `;
         taskListContainer.appendChild(taskItem);
@@ -226,8 +230,8 @@ function renderResources(filteredResources = resources) {
                 <p>${resource.tags.length ? 'Tags: ' + resource.tags.map(tag => `<span class="tag" style="background-color: ${getColor(tag)}" onclick="filterResources('${tag}')">${tag}</span>`).join(', ') : ''}</p>
             </div>
             <div class="actions">
-                <button class="icon-button" onclick="editResource(${resource.id}, event)">✎</button>
-                <button class="icon-button" onclick="confirmDeleteResource(${resource.id}, event)">🗑</button>
+                <button class="icon-button" onclick="editResource('${resource.id}', event)">✎</button>
+                <button class="icon-button" onclick="confirmDeleteResource('${resource.id}', event)">🗑</button>
                 <button class="icon-button" onclick="copyUrl('${resource.url}', event)">📋</button>
             </div>
         `;
@@ -250,12 +254,12 @@ function renderMisc(filteredMisc = miscData) {
         const miscItem = document.createElement('div');
         miscItem.className = 'misc-item';
         miscItem.innerHTML = `
-            <div class="misc-item-details" onclick="showMiscDetail(${misc.id})">
+            <div class="misc-item-details" onclick="showMiscDetail('${misc.id}')">
                 <h3>${misc.merchantName}</h3>
             </div>
             <div class="actions">
-                <button class="icon-button" onclick="editMisc(${misc.id}, event)">✎</button>
-                <button class="icon-button" onclick="confirmDeleteMisc(${misc.id}, event)">🗑</button>
+                <button class="icon-button" onclick="editMisc('${misc.id}', event)">✎</button>
+                <button class="icon-button" onclick="confirmDeleteMisc('${misc.id}', event)">🗑</button>
             </div>
         `;
         miscListContainer.appendChild(miscItem);
@@ -464,18 +468,6 @@ function updateDashboard() {
     }
 }
 
-function updateAnalytics() {
-    const totalTasks = tasks.length;
-    const subscribedTasks = tasks.filter(task => task.status === 'Subscribed').length;
-    const totalResources = resources.length;
-    const totalMisc = miscData.length;
-
-    document.getElementById('total-tasks').innerText = `Total Tasks: ${totalTasks}`;
-    document.getElementById('total-subscribed-tasks').innerText = `Subscribed Tasks: ${subscribedTasks}`;
-    document.getElementById('total-resources').innerText = `Total Resources: ${totalResources}`;
-    document.getElementById('total-misc').innerText = `Total Miscellaneous Info: ${totalMisc}`;
-}
-
 function clearInputs() {
     document.getElementById('title').value = '';
     document.getElementById('description').value = '';
@@ -514,7 +506,7 @@ function exportToCSV() {
     csvContent += 'Title,Description,Deadline,Tags,Status\n';
 
     tasks.forEach(task => {
-        csvContent += `${task.title},${task.description},${task.deadline},"${task.tags.join(', ')}",${task.status}\n`;
+        csvContent += `${task.title},${task.description},${task.deadline},"${task.tags.join(';')}","${task.status}"\n`;
     });
 
     const encodedUri = encodeURI(csvContent);
@@ -542,18 +534,18 @@ function importCSV() {
             tasks = rows.map(row => {
                 const cols = row.split(',');
                 return {
-                    id: Date.now(),
+                    id: generateUniqueId(),
                     title: cols[0],
                     description: cols[1],
                     deadline: cols[2],
                     tags: cols[3] ? cols[3].split(';') : [],
-                    status: cols[4]
+                    status: cols[4].replace(/"/g, '')
                 };
             });
             saveToLocalStorage('tasks', tasks);
             renderTasks();
             updateDashboard();
-            updateAnalytics();
+            tasks.forEach(task => addMiscFromTask(task));
         };
         reader.readAsText(file);
     }
@@ -564,7 +556,7 @@ function exportResourcesToCSV() {
     csvContent += 'Name,URL,Tags\n';
 
     resources.forEach(resource => {
-        csvContent += `${resource.name},${resource.url},"${resource.tags.join(', ')}"\n`;
+        csvContent += `${resource.name},${resource.url},"${resource.tags.join(';')}"\n`;
     });
 
     const encodedUri = encodeURI(csvContent);
@@ -592,7 +584,7 @@ function importResourcesCSV() {
             resources = rows.map(row => {
                 const cols = row.split(',');
                 return {
-                    id: Date.now(),
+                    id: generateUniqueId(),
                     name: cols[0],
                     url: cols[1],
                     tags: cols[2] ? cols[2].split(';') : []
@@ -600,7 +592,6 @@ function importResourcesCSV() {
             });
             saveToLocalStorage('resources', resources);
             renderResources();
-            updateAnalytics();
         };
         reader.readAsText(file);
     }
@@ -639,7 +630,7 @@ function importMiscCSV() {
             miscData = rows.map(row => {
                 const cols = row.split(',');
                 return {
-                    id: Date.now(),
+                    id: generateUniqueId(),
                     merchantName: cols[0],
                     accessApple: cols[1],
                     accessFacebook: cols[2],
@@ -661,7 +652,6 @@ function importMiscCSV() {
             });
             saveToLocalStorage('miscData', miscData);
             renderMisc();
-            updateAnalytics();
         };
         reader.readAsText(file);
     }
@@ -737,10 +727,6 @@ function showTab(tabId) {
         navItem.classList.remove('active');
     }
     document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
-
-    if (tabId === 'analytics') {
-        updateAnalytics();
-    }
 }
 
 function copyUrl(url, event) {
